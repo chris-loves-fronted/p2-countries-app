@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Countries App</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <page-wrapper>
+            <header>
+                <left-side>
+                    <img
+                        src="/assets/where-in-the-world-logo.svg"
+                        alt="Website logo"
+                        width="100px"
+                        height="100px"
+                    />
+
+                    <search-wrapper>
+                        <img src="/assets/search-white.svg" alt width="20px" height="20px" />
+                        <input
+                            type="search"
+                            name="countrySearch"
+                            id="countrySearch"
+                            placeholder="Search for a country ..."
+                        />
+                    </search-wrapper>
+                </left-side>
+
+                <right-side role="navigation">
+                    <select name="filterCountry" id="filterCountry">
+                        <option value="">Select Area</option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+
+                    <img
+                        src="/assets/sun.svg"
+                        alt
+                        aria-label="Switch Color Mode"
+                        id="colorModeSwitcher"
+                        width="30px"
+                        height="30px"
+                    />
+                </right-side>
+            </header>
+
+            <main>
+                <grid-item>Test</grid-item>
+                <grid-item>Test</grid-item>
+                <grid-item>Test</grid-item>
+                <grid-item>Test</grid-item>
+                <grid-item>Test</grid-item>
+            </main>
+        </page-wrapper>
+    </body>
+</html>

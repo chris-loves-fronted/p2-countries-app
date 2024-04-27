@@ -1,0 +1,74 @@
+body {
+    background: #112e54;
+    margin: 0;
+    width: 100%;
+}
+
+header,
+left-side,
+right-side,
+search-filter-section,
+search-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input,
+select {
+    border: none;
+    background: transparent;
+    outline: none;
+    color: white;
+    height: 40px;
+}
+
+page-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    padding: 20px 0;
+
+    left-side,
+    right-side {
+        gap: 20px;
+    }
+
+    search-wrapper {
+        /* border: thin solid gray; */
+        border-radius: 10px;
+        padding: 0 20px;
+    }
+
+    input[type='search'] {
+        background: transparent;
+        width: 300px;
+        padding-inline: 10px;
+        color: white;
+    }
+
+    select[name='filterCountry'] {
+        width: 150px;
+    }
+}
+
+main {
+    width: 100%;
+    display: grid;
+    justify-content: space-between;
+    gap: 40px;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+grid-item {
+    background: yellow;
+    width: auto;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+}
