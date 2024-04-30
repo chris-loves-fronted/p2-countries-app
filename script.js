@@ -8,15 +8,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     countries.forEach((country) => {
         [gridItem, countryImage, countryInfoContainer, countryInfo] = createCountryCard();
 
+        const [lang] = getCountryLang(country.languages);
+
+        countryInfoContainer.title = country.name.official;
+
         countryImage.src = country.flags.svg;
         countryImage.alt = country.name.common;
         countryImage.style.width = 'inherit';
+        countryImage.title = country.name.official;
 
         countryInfo.innerHTML = `
             <h2>${country.name.common}</h2>
-            <h3>Capital: ${country.capital}</h3>
-            <h3>Region: ${country.region}</h3>
-            <h3>Population: ${country.population.toLocaleString()}</h3>
+            <h3><span>Capital:</span> ${country.capital}</h3>
+            <h3><span>Region:</span> ${country.region}</h3>
+            <h3><span>Population:</span> ${country.population.toLocaleString()}</h3>
+            <h3><span>Spoken Language:</span> ${lang.at(1)}</h3>
         `;
 
         countryInfoContainer.appendChild(countryInfo);
@@ -25,6 +31,15 @@ window.addEventListener('DOMContentLoaded', async () => {
         mainGrid?.appendChild(gridItem);
     });
 });
+
+function getCountryLang(langObject) {
+    console.log(langObject);
+    if (langObject !== undefined) {
+        return Object.entries(langObject);
+    }
+
+    return 'n/a';
+}
 
 function createCountryCard() {
     const gridItem = document.createElement('country-card');
