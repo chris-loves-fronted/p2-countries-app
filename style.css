@@ -19,11 +19,17 @@ search-wrapper {
 
 input,
 select {
+    width: 200px;
     border: none;
-    background: transparent;
+    background: inherit;
     outline: none;
     color: white;
     height: 40px;
+
+    option {
+        background: #112e54;
+        outline: none;
+    }
 }
 
 page-wrapper {
@@ -31,6 +37,13 @@ page-wrapper {
     flex-direction: column;
     width: 80%;
     margin: 0 auto;
+    height: 100vh;
+
+    img[id='loadingSpinner'] {
+        filter: invert(100%);
+        align-self: center;
+        margin-top: 150px;
+    }
 }
 
 header {

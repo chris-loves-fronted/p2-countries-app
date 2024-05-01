@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Countries App</title>
         <link rel="stylesheet" href="style.css" />
-        <script src="script.js"></script>
+        <script src="script.js" type="module"></script>
     </head>
     <body>
         <page-wrapper>
@@ -30,10 +30,8 @@
                 </left-side>
 
                 <right-side role="navigation">
-                    <select name="filterCountry" id="filterCountry">
-                        <option value="">Select Area</option>
-                        <option value=""></option>
-                        <option value=""></option>
+                    <select name="areaFilter" id="areaFilter">
+                        <option value="">Select an Area</option>
                     </select>
 
                     <img
@@ -47,8 +45,15 @@
                 </right-side>
             </header>
 
+            <img
+                src="./assets/6-dots-scale.svg"
+                width="50px"
+                height="50px"
+                alt
+                id="loadingSpinner"
+            />
             <main>
-                <!-- filled with JS -->
+                <!-- Country Cards filled with JS -->
             </main>
         </page-wrapper>
     </body>

@@ -1,63 +1,50 @@
 // @ts-nocheck
+import { API } from './API.js';
+import { UI } from './UI.js';
+
+const mainGrid = document.querySelector('main');
+const searchInput = document.getElementById('countrySearch');
+const areaFilter = document.getElementById('areaFilter');
+
+let countries;
+
+// Fetching Countries from API
 window.addEventListener('DOMContentLoaded', async () => {
-    const countries = await fetchCountries();
-    const mainGrid = document.querySelector('main');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    countries = await API.fetchCountries();
 
-    console.log(countries);
+    if (countries) {
+        const countryFetchEvent = new Event('CountriesFetched', { bubbles: true });
 
-    countries.forEach((country) => {
-        [gridItem, countryImage, countryInfoContainer, countryInfo] = createCountryCard();
-
-        const [lang] = getCountryLang(country.languages);
-
-        countryInfoContainer.title = country.name.official;
-
-        countryImage.src = country.flags.svg;
-        countryImage.alt = country.name.common;
-        countryImage.style.width = 'inherit';
-        countryImage.title = country.name.official;
-
-        countryInfo.innerHTML = `
-            <h2>${country.name.common}</h2>
-            <h3><span>Capital:</span> ${country.capital}</h3>
-            <h3><span>Region:</span> ${country.region}</h3>
-            <h3><span>Population:</span> ${country.population.toLocaleString()}</h3>
-            <h3><span>Spoken Language:</span> ${lang.at(1)}</h3>
-        `;
-
-        countryInfoContainer.appendChild(countryInfo);
-
-        gridItem.append(countryImage, countryInfoContainer);
-        mainGrid?.appendChild(gridItem);
-    });
+        document.dispatchEvent(countryFetchEvent);
+        loadingSpinner.hidden = true;
+    }
 });
 
-function getCountryLang(langObject) {
-    console.log(langObject);
-    if (langObject !== undefined) {
-        return Object.entries(langObject);
+// Rendering Countries into DOM
+document.addEventListener('CountriesFetched', () => {
+    UI.renderCountryCards(countries, mainGrid);
+
+    const remDuplicateAreas = new Set(countries.map((country) => (country = country.region)));
+
+    for (const area of remDuplicateAreas) {
+        const option = document.createElement('option');
+
+        option.value = area.toLowerCase();
+        option.textContent = area;
+
+        areaFilter.appendChild(option);
     }
 
-    return 'n/a';
-}
+    // Filtering Countries by Search Input
+    searchInput.addEventListener('input', ({ target: { value } }) => {
+        const filteredCountries = countries.filter((country) =>
+            country.name.common.toLowerCase().includes(value.toLowerCase())
+        );
 
-function createCountryCard() {
-    const gridItem = document.createElement('country-card');
-    const countryImage = document.createElement('img');
-    const countryInfoContainer = document.createElement('country-info');
-    const countryInfo = document.createElement('p');
+        mainGrid.innerHTML = '';
+        UI.renderCountryCards(filteredCountries, mainGrid);
 
-    return [gridItem, countryImage, countryInfoContainer, countryInfo];
-}
-
-async function fetchCountries() {
-    const RESPONSE = await fetch('https://restcountries.com/v3.1/all');
-
-    if (!RESPONSE.ok) {
-        console.log(RESPONSE.status);
-    }
-
-    const countries = await RESPONSE.json();
-
-    return countries;
-}
+        if (!filteredCountries.length) mainGrid.innerHTML = 'No Countries found';
+    });
+});
