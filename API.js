@@ -3,11 +3,12 @@ export const API = {
         const RESPONSE = await fetch('https://restcountries.com/v3.1/all');
 
         if (!RESPONSE.ok) {
-            console.log(RESPONSE.status);
+            const fetchErrorEvent = new Event('FetchDataFail', { bubbles: true });
+            document.dispatchEvent(fetchErrorEvent);
+            return;
         }
 
         const countries = await RESPONSE.json();
-
         return countries;
     },
 };

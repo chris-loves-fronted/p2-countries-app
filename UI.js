@@ -1,22 +1,16 @@
 // @ts-nocheck
 export const UI = {
-    createCountryCard: () => {
-        const countryCard = document.createElement('country-card');
-        const countryImage = document.createElement('img');
-        const countryInfoContainer = document.createElement('country-info');
-        const countryInfo = document.createElement('p');
+    renderContinents: (contintents, node) => {
+        for (const continent of contintents) {
+            const option = document.createElement('option');
 
-        return [countryCard, countryImage, countryInfoContainer, countryInfo];
-    },
+            option.value = continent.toLowerCase();
+            option.textContent = continent;
 
-    getCountryLang: (langObject) => {
-        if (langObject !== undefined) {
-            return Object.entries(langObject);
+            node.appendChild(option);
         }
-
-        return 'n/a';
     },
-    renderCountryCards: (countries, mainGrid) => {
+    renderCountryCards: (countries, node) => {
         countries.forEach((country) => {
             const [countryCard, countryImage, countryInfoContainer, countryInfo] =
                 UI.createCountryCard();
@@ -39,7 +33,23 @@ export const UI = {
 
             countryInfoContainer.appendChild(countryInfo);
             countryCard.append(countryImage, countryInfoContainer);
-            mainGrid.appendChild(countryCard);
+            node.appendChild(countryCard);
         });
+    },
+    createCountryCard: () => {
+        const countryCard = document.createElement('country-card');
+        const countryImage = document.createElement('img');
+        const countryInfoContainer = document.createElement('country-info');
+        const countryInfo = document.createElement('p');
+
+        return [countryCard, countryImage, countryInfoContainer, countryInfo];
+    },
+
+    getCountryLang: (langObject) => {
+        if (langObject !== undefined) {
+            return Object.entries(langObject);
+        }
+
+        return 'n/a';
     },
 };

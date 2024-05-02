@@ -2,49 +2,71 @@
 import { API } from './API.js';
 import { UI } from './UI.js';
 
+// Global Scope Variables
+const loadingSpinner = document.getElementById('loadingSpinner');
+const searchField = document.getElementById('countrySearch');
+const selectField = document.getElementById('continentFilter');
 const mainGrid = document.querySelector('main');
-const searchInput = document.getElementById('countrySearch');
-const areaFilter = document.getElementById('areaFilter');
 
-let countries;
+let countries = [];
+let continents = [];
+let filteredCountries = [];
+let selectedContinent = '';
+let searchInputValue = '';
+
+// Check for Fetching Countries Data Error
+window.addEventListener('FetchDataFail', () => {
+    mainGrid.innerHTML = 'Error! Please try again later.';
+    loadingSpinner.hidden = true;
+});
 
 // Fetching Countries from API
 window.addEventListener('DOMContentLoaded', async () => {
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    countries = await API.fetchCountries();
+    countries = [...(await API.fetchCountries())];
 
     if (countries) {
         const countryFetchEvent = new Event('CountriesFetched', { bubbles: true });
 
+        continents = new Set(countries.map((country) => (country = country.region)));
         document.dispatchEvent(countryFetchEvent);
+
         loadingSpinner.hidden = true;
     }
 });
 
-// Rendering Countries into DOM
+// Rendering Countries Data into DOM
 document.addEventListener('CountriesFetched', () => {
+    UI.renderContinents(continents, continentFilter);
     UI.renderCountryCards(countries, mainGrid);
 
-    const remDuplicateAreas = new Set(countries.map((country) => (country = country.region)));
-
-    for (const area of remDuplicateAreas) {
-        const option = document.createElement('option');
-
-        option.value = area.toLowerCase();
-        option.textContent = area;
-
-        areaFilter.appendChild(option);
-    }
-
-    // Filtering Countries by Search Input
-    searchInput.addEventListener('input', ({ target: { value } }) => {
-        const filteredCountries = countries.filter((country) =>
-            country.name.common.toLowerCase().includes(value.toLowerCase())
-        );
+    selectField.addEventListener('change', ({ target: { value } }) => {
+        selectedContinent = value.toLowerCase();
+        filteredCountries = filterCountries(countries, searchInputValue, selectedContinent);
 
         mainGrid.innerHTML = '';
         UI.renderCountryCards(filteredCountries, mainGrid);
+    });
 
-        if (!filteredCountries.length) mainGrid.innerHTML = 'No Countries found';
+    searchField.addEventListener('input', ({ target: { value } }) => {
+        searchInputValue = value;
+        filteredCountries = filterCountries(countries, searchInputValue, selectedContinent);
+
+        if (!filteredCountries.length) {
+            return (mainGrid.innerHTML = 'No Countries found');
+        }
+
+        mainGrid.innerHTML = '';
+        UI.renderCountryCards(filteredCountries, mainGrid);
     });
 });
+
+// Helpers
+function filterCountries(countries, searchValue, selectedContinent) {
+    const filteredCountries = countries.filter(
+        (country) =>
+            country.name.common.toLowerCase().includes(searchValue) &&
+            (selectedContinent ? country.region.toLowerCase() === selectedContinent : country)
+    );
+
+    return filteredCountries;
+}
