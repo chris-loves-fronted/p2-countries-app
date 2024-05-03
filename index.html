@@ -7,19 +7,20 @@
         <link rel="stylesheet" href="style.css" />
         <script src="script.js" type="module"></script>
     </head>
-    <body>
+    <body data-color-mode="dark">
         <page-wrapper>
             <header>
                 <left-side>
                     <img
-                        src="/assets/where-in-the-world-logo.svg"
+                        src="/assets/logo-white.png"
                         alt="Website logo"
                         width="100px"
                         height="100px"
+                        id="websiteLogo"
                     />
 
                     <search-wrapper>
-                        <img src="/assets/search-white.svg" alt width="20px" height="20px" />
+                        <img src="/assets/search-white.svg" alt width="20px" height="20px" id="searchIcon" />
                         <input
                             type="search"
                             name="countrySearch"
@@ -41,6 +42,7 @@
                         id="colorModeSwitcher"
                         width="30px"
                         height="30px"
+                        title="Switch Color Mode"
                     />
                 </right-side>
             </header>
